@@ -1,7 +1,7 @@
 ---
 title: "SumTableFunctions Vignette"
 author: "Luke Fostvedt"
-date: "November 7, 2019"
+date: "November 11, 2019"
 header-includes:
 - \usepackage{pdflscape}
 - \usepackage{longtable}
@@ -31,9 +31,8 @@ This is a tutorial of some summary table functions created to simplify and stand
 While the functions have some edit checks, they wont catch everything. so it is important that the use confirm 
 that the output is as expected. Two functions will be discussed here with the emphasis being mostly on the first one.
 
+Examples just using LaTeX code with `xtable` are provided as well as an example using `kable` within the `knitr` package.
 
-Warning: While the data are anonymous and further edits have been made to ensure they unidentifiable, they are based
-off real patient data and MUST NOT be distributed outside of pfizer.
 
 ## Description of Each Function
 
@@ -145,8 +144,7 @@ A description of each argument is provided in the following bulleted list:
 
 ```{r ,include=TRUE,echo=TRUE}
 source("SummaryTableFunctions.R")
-d <- read.csv("https://raw.githubusercontent.com/fostvedt/ACoP-ordinal-regression/master/AEs-ordinal-data-ver3.csv",header=T,stringsAsFactors = F)
-#write.csv(d.demog,"Example-dataset.csv",row.names = F,quote = F)
+d <- read.csv("Example-dataset.csv",header=T,stringsAsFactors = F)
 ```
 
 
@@ -479,6 +477,6 @@ tab[row1[-length(row1)]+1,1] <- paste0("\\hline ",tab[row1[-length(row1)]+1,1])
 
 
 print(xtable(tab,
-             caption="Summary of Categorical Covariates"),
+             caption="Summary of Categorical Covariates"),size="small",
         include.rownames=F, sanitize.text.function=identity, caption.placement="top",comment=FALSE)
 ```

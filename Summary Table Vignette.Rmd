@@ -265,12 +265,9 @@ cont.fun1<-pmx.sum.table.comb(data = d,
 #write.csv(cont.fun1,"Continuous-functions-different-order-example.csv",quote=F,row.names = F)
 ```
 
-```{r,include=TRUE,echo=FALSE} 
-# editing to move the \hline down since knitr compiles the line above rather than below
+```{r,include=TRUE,echo=TRUE} 
 library(kableExtra)
-tab <- cont.fun1
-
-kable(tab,booktabs=T, caption="Summary Table of Age With Different Ordering of Summary Functions",
+kable(cont.fun1,booktabs=T, caption="Summary Table of Age With Different Ordering of Summary Functions",
       linesep="")%>%
 kable_styling(latex_options = c("striped","hold_position"))
 ```

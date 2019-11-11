@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/W32TeX) (preloaded format=pdflatex 2019.11.6)  11 NOV 2019 15:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/W32TeX) (preloaded format=pdflatex 2019.11.6)  11 NOV 2019 15:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1025,24 +1025,33 @@ Package xcolor Warning: Incompatible color definition on input line 602.
 
 Package xcolor Warning: Incompatible color definition on input line 602.
 
+
+Package xcolor Warning: Incompatible color definition on input line 604.
+
+
+Package xcolor Warning: Incompatible color definition on input line 611.
+
+
+Package xcolor Warning: Incompatible color definition on input line 611.
+
 [7pdfTeX warning (ext4): destination with the same identifier (name{table.3}) h
 as been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.630 \newpage
+l.639 \newpage
               ]
 
-Package xcolor Warning: Incompatible color definition on input line 635.
+Package xcolor Warning: Incompatible color definition on input line 644.
 
 
-Package xcolor Warning: Incompatible color definition on input line 652.
+Package xcolor Warning: Incompatible color definition on input line 661.
 
 
-Package xcolor Warning: Incompatible color definition on input line 652.
+Package xcolor Warning: Incompatible color definition on input line 661.
 
 
-Overfull \hbox (0.96617pt too wide) in paragraph at lines 657--670
+Overfull \hbox (0.96617pt too wide) in paragraph at lines 666--679
  [][] 
  []
 
@@ -1051,99 +1060,99 @@ as been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.672 \newpage
+l.681 \newpage
               ]
 
-Package xcolor Warning: Incompatible color definition on input line 682.
+Package xcolor Warning: Incompatible color definition on input line 691.
 
 
-Package xcolor Warning: Incompatible color definition on input line 688.
+Package xcolor Warning: Incompatible color definition on input line 697.
 
 
-Package xcolor Warning: Incompatible color definition on input line 688.
+Package xcolor Warning: Incompatible color definition on input line 697.
 
 
-Package xcolor Warning: Incompatible color definition on input line 690.
+Package xcolor Warning: Incompatible color definition on input line 699.
 
 
-Package xcolor Warning: Incompatible color definition on input line 706.
+Package xcolor Warning: Incompatible color definition on input line 715.
 
 
-Package xcolor Warning: Incompatible color definition on input line 706.
+Package xcolor Warning: Incompatible color definition on input line 715.
 
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9> on input line 712.
+(Font)              <9> on input line 721.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 712.
+(Font)              <6> on input line 721.
 [9
 
 ]
 
-Package xcolor Warning: Incompatible color definition on input line 750.
+Package xcolor Warning: Incompatible color definition on input line 759.
 
 
-Package xcolor Warning: Incompatible color definition on input line 764.
+Package xcolor Warning: Incompatible color definition on input line 773.
 
 
-Package xcolor Warning: Incompatible color definition on input line 764.
+Package xcolor Warning: Incompatible color definition on input line 773.
 
 
-Package xcolor Warning: Incompatible color definition on input line 764.
+Package xcolor Warning: Incompatible color definition on input line 773.
 
 [10pdfTeX warning (ext4): destination with the same identifier (name{table.5}) 
 has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.764 \end{Shaded}
+l.773 \end{Shaded}
                   ]
 
-Package xcolor Warning: Incompatible color definition on input line 764.
+Package xcolor Warning: Incompatible color definition on input line 773.
 
 
-Package xcolor Warning: Incompatible color definition on input line 764.
+Package xcolor Warning: Incompatible color definition on input line 773.
 
 [11pdfTeX warning (ext4): destination with the same identifier (name{table.6}) 
 has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.795 \newpage
+l.804 \newpage
               ]
 
-Package xcolor Warning: Incompatible color definition on input line 801.
+Package xcolor Warning: Incompatible color definition on input line 810.
 
 
-Package xcolor Warning: Incompatible color definition on input line 815.
+Package xcolor Warning: Incompatible color definition on input line 824.
 
 
-Package xcolor Warning: Incompatible color definition on input line 815.
+Package xcolor Warning: Incompatible color definition on input line 824.
 
 [12] [13]
 
-Package xcolor Warning: Incompatible color definition on input line 874.
+Package xcolor Warning: Incompatible color definition on input line 883.
 
 
-Package xcolor Warning: Incompatible color definition on input line 885.
+Package xcolor Warning: Incompatible color definition on input line 894.
 
 
-Package xcolor Warning: Incompatible color definition on input line 885.
-
-
-Package xcolor Warning: Incompatible color definition on input line 904.
+Package xcolor Warning: Incompatible color definition on input line 894.
 
 
 Package xcolor Warning: Incompatible color definition on input line 913.
 
 
-Package xcolor Warning: Incompatible color definition on input line 913.
+Package xcolor Warning: Incompatible color definition on input line 922.
 
 
-Overfull \hbox (2.91112pt too wide) in paragraph at lines 919--932
+Package xcolor Warning: Incompatible color definition on input line 922.
+
+
+Overfull \hbox (2.91112pt too wide) in paragraph at lines 928--941
  [][] 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 935.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 944.
 [14
 
 pdfTeX warning (ext4): destination with the same identifier (name{table.8}) has
@@ -1151,22 +1160,22 @@ pdfTeX warning (ext4): destination with the same identifier (name{table.8}) has
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.935 \end{document}
+l.944 \end{document}
                     pdfTeX warning (ext4): destination with the same identifier
  (name{table.9}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.935 \end{document}
+l.944 \end{document}
                     ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 935.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 944.
 (./Summary_Table_Vignette.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 935.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 935.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 944.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 944.
 Package rerunfilecheck Info: File `Summary_Table_Vignette.out' has not changed.
 
 (rerunfilecheck)             Checksum: 1405539BEE4B6D36B146789B794DCB2D;4511.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 935.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 944.
  ) 
 Here is how much of TeX's memory you used:
  13054 strings out of 494111
@@ -1188,7 +1197,7 @@ t/fonts/type1/public/lm/lmr9.pfb><c:/Users/fostvl/AppData/Roaming/TinyTeX/texmf
 /texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/fostvl/AppData/Roaming/T
 inyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/fostvl/AppData/Roa
 ming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on Summary_Table_Vignette.pdf (14 pages, 268047 bytes).
+Output written on Summary_Table_Vignette.pdf (14 pages, 269532 bytes).
 PDF statistics:
  192 PDF objects out of 1000 (max. 8388607)
  165 compressed objects within 2 object streams

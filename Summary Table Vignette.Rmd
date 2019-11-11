@@ -13,7 +13,6 @@ output:
 
 ```{r setup, include=TRUE,echo=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-#source("SumTableFunctions.R")
 options(warn = -1)
 library(xtable)
 ```
@@ -163,7 +162,6 @@ d$DOSE <- factor(d$DOSE,levels=c(0,10,30,50,100),
 #d$CMAXSS <- as.numeric(d$CMAXSS)
 #d$BIO <- as.numeric(d$BIO)
 #d$BIO2 <- as.numeric(d$BIO2)
-#d$BIO2 <- as.numeric(d$BIO2)
 ```
 
 
@@ -230,7 +228,7 @@ cont.fun<-pmx.sum.table.comb(data = d,
       PERCENT=TRUE,
       Perc.Digits = 1,
       funs.summary=c("median","mean","sd","range","n","miss","geomean","geosd","geocv"))
-write.csv(cont.fun,"Continuous-functions-example.csv",quote=F,row.names = F)
+#write.csv(cont.fun,"Continuous-functions-example.csv",quote=F,row.names = F)
 ```
 
 ```{r,include=TRUE,echo=FALSE,results="asis"} 
@@ -389,7 +387,7 @@ tab[row1[-length(row1)]+1,1] <- paste0("\\hline ",tab[row1[-length(row1)]+1,1])
 
 
 print(xtable(tab,
-             caption="Summary Table of Baseline Disease Severity Across Studies and Gender"),
+             caption="Summary Table of Biomarker with Gender Breakdown"),
             include.rownames=F, sanitize.text.function=identity, 
       caption.placement="top",comment=FALSE)
 ```
@@ -455,7 +453,7 @@ tab[,2] <- gsub("\\\\hline","",tab[,2])
 
 
 print(xtable(tab,
-             caption="Summary of Race by Study"),
+             caption="Summary of Smoking Status by Dose"),
         include.rownames=F, sanitize.text.function=identity, caption.placement="top",comment=FALSE)
 ```
 

@@ -1,0 +1,485 @@
+---
+title: "SumTableFunctions Vignette"
+author: "Luke Fostvedt"
+date: "November 7, 2019"
+header-includes:
+- \usepackage{pdflscape}
+- \usepackage{longtable}
+- \newcommand{\blandscape}{\begin{landscape}}
+- \newcommand{\elandscape}{\end{landscape}}
+output:
+  pdf_document: default
+---
+
+```{r setup, include=TRUE,echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#source("SumTableFunctions.R")
+options(warn = -1)
+library(xtable)
+```
+
+
+\newcommand{\myinput}[1]{%
+  \begingroup%
+  \renewcommand\normalsize{\small}% Specify your font modification
+  \input{#1}%
+  \endgroup%
+}
+
+## Categorical and Continuous Summary Tables
+
+This is a tutorial of some summary table functions created to simplify and standardize our reporting.
+While the functions have some edit checks, they wont catch everything. so it is important that the use confirm 
+that the output is as expected. Two functions will be discussed here with the emphasis being mostly on the first one.
+
+
+Warning: While the data are anonymous and further edits have been made to ensure they unidentifiable, they are based
+off real patient data and MUST NOT be distributed outside of pfizer.
+
+## Description of Each Function
+
+### A Flexible "One-Size-Fits-Most"" Table Function
+
+The goal was to create a series of useful functions for making tables. They all eventually got wrapped up into this one function that hopefully make table creation simpler. There is some basic data manipulation that needs to occur before using the function. 
+
+* The continuous variables in your dataset much be either "numeric" or "integer". 
+* The categorical covariates should be defined as factors with the levels provided, otherwise the values in the dataset will print out (eg for Sex with values 1 and 2, the numbers will print rather than Male and Female). 
+
+These are really the only things necessary for the function to work. There are no package dependencies. You just need to source in the function in your R script.
+
+```{r , include=TRUE}
+source("SummaryTableFunctions.R")
+```
+
+The function has several arguments, not all will be necessary depending on the table desired. The arguments are mostly defaulted to be `NULL` to allow for easier use. This way the user only needs to use the arguments that are necessary for the desired table.
+
+\newpage
+```{r , echo=TRUE,include=TRUE,message=TRUE,eval=FALSE}
+pmx.sum.table.comb = function(
+  data,
+  cont.xvars=NULL, # variable(s) to be summarized
+  cat.xvars=NULL,  # categorical variables to summarize
+  sum.by=NULL, # what to summarize across
+  more.variables = NULL, # if summarize by subgroups, not recommended 
+  digits=NULL, # number of significant digit(s); 
+                  # need one defined for each sum.by variabel
+  LaTeX=T, # if the output should be printed with LaTeX formatting
+  Cont.Var.Name=NULL, #name of the  
+            # summary variable(s); need one for each sum.by variable
+  Cat.Var.Name=NULL, #
+  PERCENT=TRUE,
+  Perc.Digits = 0,  # number of significant digits for percentages, default 0
+  funs.summary=c("n","median","mean","sd","range","geomean","geosd","geocv","miss","se")
+)
+```
+
+A description of each argument is provided in the following bulleted list:
+
+* data: the dataset and must be a data.frame or tibble.
+* cont.xvars: a vector with the names of the continuous variables to be summarize. 
+    + The vector is looking for column names in the dataset. 
+    + It will accept either integer or numeric variables.
+* cat.xvars: This is a vector with the names of the categorical variables to be summarize. 
+    + The vector is looking for column names in the dataset. 
+    + It is recommended that the variables listed are already of class "factor".
+* sum.by: This is the variables which will comprise the columns in the final table. It is best if this is a factor. 
+    + This can only be of length 1.
+* more.variables: vector with variable names if the summaries of the continuous variables are desired to be broken down by subgroups. 
+    + It breaks down the subgroups for continuous variables.
+    + the break-down is one variable at a time presented in new rows.
+    + This does not affect categorical summaries.
+    + If only categorical summaries are desired, this should be `NULL`. Otherwise it is ignored.
+* digits: This is a vector with the number of significant digits for the summary. 
+    + It must be of the same length as cont.vars.
+    + The value should correspond to the values of the raw data (eg Age would have 0 since it an integer).
+    + The Mean, Standard Deviation, Geometric Mean, Geometric Standard Deviation, and Geometric CV will have one more significant digit than the input value.
+* LaTeX: This is a TRUE/FALSE argument
+    + TRUE will add LaTeX formatting as well as some LaTeX table indentation
+    + FALSE will do just return the table
+* Cont.Var.Name: This is the vector with the names that will print out for each continuous variable
+    + It must be the same length as cont.xvars
+* Cat.Var.Name: This is the vector with the names that will print out for each categorical variable
+    + It must be the same length as cat.xvars
+* PERCENT: this is TRUE/FALSE. 
+    + TRUE will print the % sign [eg (50%)]
+    + FALSE will just print the number in parentheses [eg (50)]
+* Perc.Digits: This is the precision desired for the percentage calculations (default is 0 and results in integer output)
+* funs.summary: This is the list of available summary functions available.
+    + The output from each summary function will print in the order given by the user in the list
+    + If both `mean` and `sd` are requested, a contracted "Mean (Std. Dev.)" will print.
+    + If both `geomean` and `geosd` are requested, a contracted "GeoMean (GeoSD)" will print.
+
+  
+
+### The Legacy tabcovsum() Function
+
+The `tabcovsum()` function was created several years ago. It is included in this script of functions with the intent of providing a QC'd version that is backwards compatible. It is recommended to use the `pmx.sum.table.comb()` function instead.
+
+```{r , echo=TRUE,include=TRUE,message=TRUE,eval=FALSE}
+tabcovsum = function(
+ x1=NULL, # The variable for the rows
+ x2=NULL, # the variable for the columns
+ x1names=NULL, # The names of the levels for each row variable for tabulation 
+ x2names=NULL, # The name that will be output of the variable which will be tabulated 
+ Total=F  #determines if a column for total tabulation should be included. 
+          #default is false for backwards compatibility
+)
+```
+
+A description of each argument is provided in the following bulleted list:
+
+* x1: variable name (eg data$RowVAR1)
+    + The unique values (or levels) will form the row names
+* x2: variable name (eg data$ColVAR1)
+    + The levels for this variable will form the column names
+* x1.names: This is a vector with the names of the categorical variables to be summarize. 
+    + The vector will be the rownames that output. 
+* x2.names: character vector, length=1. 
+    + This will be the name of the variable that prints
+    + This can only be of length 1.
+* Total: TRUE/FALSE. If a column with the totals across all columns is desired. 
+    + default is FALSE
+
+\newpage
+## Data Preparation for Examples
+
+
+```{r ,include=TRUE,echo=TRUE}
+source("SummaryTableFunctions.R")
+d <- read.csv("https://raw.githubusercontent.com/fostvedt/ACoP-ordinal-regression/master/AEs-ordinal-data-ver3.csv",header=T,stringsAsFactors = F)
+#write.csv(d.demog,"Example-dataset.csv",row.names = F,quote = F)
+```
+
+
+
+The functions work best when categorical covariates are factors with the levels as desired in the final report.
+Below we will define as factors the categorical variables in our dataset.
+
+```{r ,include=TRUE,echo=TRUE,message=F}
+d$SMOK <- factor(d$SMOK,levels=c(1:3),c("Never Smoked","Former Smoker","Current Smoker"))
+d$SEX <-  factor(d$SEX,levels=c(1,2),c("Male","Female"))
+d$DOSE <- factor(d$DOSE,levels=c(0,10,30,50,100),
+                 labels = c("0 mg","10 gm","30 mg","50 mg","100 mg"))
+#d$CMAXSS <- as.numeric(d$CMAXSS)
+#d$BIO <- as.numeric(d$BIO)
+#d$BIO2 <- as.numeric(d$BIO2)
+#d$BIO2 <- as.numeric(d$BIO2)
+```
+
+
+## pmx.sum.table.comb() Examples
+### Combined table with continuous and categorical covariates
+
+The following table will be useful for baseline demographics summaries.
+
+```{r , echo=TRUE,include=TRUE,message=FALSE}
+b1 <- pmx.sum.table.comb(data = d,
+    cont.xvars=c("AGE","WT","BIO","CMAXSS"),    # variable(s) to be summarized
+    cat.xvars=c("SEX","SMOK"),     # categorical variables to be summarized
+    sum.by=c("DOSE"),     # what to summarize across
+#    more.variables = NULL, # if subgroups are to be summarized within each variable
+    digits=c(0,1,1,1),     # number of significant digit(s); 
+                           #need one defined for each sum.by variabel
+    LaTeX=T,               # if the output should be printed with LaTeX formatting
+    Cont.Var.Name=c("Age (yrs)","Body Weight (kg)","BiomArker",
+                    "Steady-State Cmax"), 
+                          #name of the summary variable(s); 
+                          # need one for each sum.by variable
+    Cat.Var.Name=c("Sex","Smoking Status"), #
+    PERCENT=FALSE,
+    Perc.Digits = 1,
+    funs.summary=c("median","mean","sd","range","n","miss"))
+#write.csv(b1,"Continuous-Categorical-example.csv",quote=F,row.names = F)
+```
+
+
+
+```{r,include=TRUE,echo=FALSE,results="asis"} 
+# editing to move the \hline down since knitr compiles the line above rather than below
+library(xtable)
+tab <- b1
+row1 <- grep("\\hline",tab[,1])
+tab[,1] <- gsub("\\\\hline","",tab[,1])
+tab[row1[-length(row1)]+1,1] <- paste0("\\hline ",tab[row1[-length(row1)]+1,1])
+
+
+print(xtable(tab,
+             caption="Summary Table of demographics"),
+        include.rownames=F, sanitize.text.function=identity, 
+      caption.placement="top",comment=FALSE,
+      tabular.environment="longtable", floating=F,
+      table.placement="h")
+```
+
+
+\newpage
+
+### Table With Different Summary Functions
+```{r , echo=TRUE,include=TRUE,message=FALSE}
+cont.fun<-pmx.sum.table.comb(data = d,
+      cont.xvars=c("AGE"), # variable(s) to be summarized
+#      cat.xvars=NULL,  # categorical variables to summarize
+      sum.by=c("DOSE"), # what to summarize across
+#      more.variables = NULL, # if summarize by subgroups, not recommended 
+      digits=c(0), # number of significant digit(s); 
+                    # need one defined for each sum.by variabel
+      LaTeX=T, # if the output should be printed with LaTeX formatting
+      Cont.Var.Name=c("Age (yr)"), #name of the  
+              # summary variable(s); need one for each sum.by variable
+#      Cat.Var.Name=NULL, #
+      PERCENT=TRUE,
+      Perc.Digits = 1,
+      funs.summary=c("median","mean","sd","range","n","miss","geomean","geosd","geocv"))
+write.csv(cont.fun,"Continuous-functions-example.csv",quote=F,row.names = F)
+```
+
+```{r,include=TRUE,echo=FALSE,results="asis"} 
+# editing to move the \hline down since knitr compiles the line above rather than below
+library(xtable)
+tab <- cont.fun
+row1 <- grep("\\hline",tab[,1])
+tab[,1] <- gsub("\\\\hline","",tab[,1])
+tab[row1[-length(row1)]+1,1] <- paste0("\\hline ",tab[row1[-length(row1)]+1,1])
+
+
+print(xtable(tab,
+             caption="Summary Table of Age with All Summary Functions"),
+        include.rownames=F, sanitize.text.function=identity, caption.placement="top",comment=FALSE)
+```
+
+\newpage
+
+## Using kable: Table With Different Order of Functions
+```{r , echo=TRUE,include=TRUE,message=FALSE}
+cont.fun1<-pmx.sum.table.comb(data = d,
+      cont.xvars=c("AGE"), # variable(s) to be summarized
+#      cat.xvars=NULL,  # categorical variables to summarize
+      sum.by=c("DOSE"), # what to summarize across
+#      more.variables = NULL, # if summarize by subgroups, not recommended 
+      digits=c(0), # number of significant digit(s); 
+                    # need one defined for each sum.by variabel
+      LaTeX=F, # if the output should be printed with LaTeX formatting
+      Cont.Var.Name=c("Age (yrs)"), #name of the  
+              # summary variable(s); need one for each sum.by variable
+#      Cat.Var.Name=NULL, #
+      PERCENT=TRUE,
+      Perc.Digits = 1,
+      funs.summary=c("n","geomean","geosd","miss","median","geocv","mean","sd","range"))
+#write.csv(cont.fun1,"Continuous-functions-different-order-example.csv",quote=F,row.names = F)
+```
+
+```{r,include=TRUE,echo=FALSE} 
+# editing to move the \hline down since knitr compiles the line above rather than below
+library(kableExtra)
+tab <- cont.fun1
+
+kable(tab,booktabs=T, caption="Summary Table of Age With Different Ordering of Summary Functions",
+      linesep="")%>%
+kable_styling(latex_options = c("striped","hold_position"))
+```
+
+
+
+
+\newpage
+### Table With Several Categorical covariates
+```{r , echo=TRUE,include=TRUE,message=FALSE}
+cat1<-pmx.sum.table.comb(data = d,
+#      cont.xvars=NULL, # variable(s) to be summarized
+      cat.xvars=c("SEX","SMOK"),  # categorical variables to summarize
+      sum.by=c("DOSE"), # what to summarize across
+#      more.variables = NULL, # if summarize by subgroups, not recommended 
+#      digits=NULL, # number of significant digit(s); 
+                    # need one defined for each sum.by variabel
+      LaTeX=T, # if the output should be printed with LaTeX formatting
+#      Cont.Var.Name=NULL, #name of the  
+              # summary variable(s); need one for each sum.by variable
+      Cat.Var.Name=c("Sex","Smoking Status"), #
+      PERCENT=TRUE,
+      Perc.Digits = 1)
+#write.csv(cat1,"Categorical-only-example.csv",quote=F,row.names = F)
+```
+
+```{r,include=TRUE,echo=FALSE,results="asis"} 
+# editing to move the \hline down since knitr compiles the line above rather than below
+library(xtable)
+tab <- cat1
+row1 <- grep("\\hline",tab[,1])
+tab[,1] <- gsub("\\\\hline","",tab[,1])
+tab[row1[-length(row1)]+1,1] <- paste0("\\hline ",tab[row1[-length(row1)]+1,1])
+
+
+print(xtable(tab,
+             caption="Summary Table of Categorical Demographics"),
+        include.rownames=F, sanitize.text.function=identity, caption.placement="top",comment=FALSE)
+```
+
+
+
+
+
+\newpage
+\blandscape
+
+### Table With Several Continuous covariates
+
+
+In the event comparison by several categorical covariates are desired, a separate covariate should be constructed.
+```{r ,include=TRUE,echo=TRUE}
+d$SMOK.SEX <- factor(interaction(d$SMOK,d$SEX))
+levels(d$SMOK.SEX) <- c("No-Smoker Male","No-Smoker Female","Fo-SmokerMale","Fo-Smoker Female",
+                              "Smoker  Male","Smoker Female")
+```
+
+```{r , echo=TRUE,include=TRUE,message=FALSE}
+a4 <- pmx.sum.table.comb(d,
+                         cont.xvars=c("BIO","BIO2","CMAXSS","CAVGSS"),
+#                         cat.xvars = NULL,
+                         sum.by=c("SMOK.SEX"),
+#                         more.variables = c(),
+                         digits=c(2,2,1,1),
+                         LaTeX=T,
+                         PERCENT=T,
+                         Perc.Digits = 1,
+                         Cont.Var.Name=c("Biomarker 1","Biomarker 2","Steady-State Cmax","Steady-State Cavg"),
+#                         Cat.Var.Name = NULL,
+                         funs.summary=c("median","range","mean","sd","n","miss"))
+#write.csv(a4,"Multiple-continuous-example.csv",quote=F,row.names = F)
+```
+
+```{r,include=TRUE,echo=FALSE,results="asis"} 
+library(xtable)
+tab <- a4
+row1 <- grep("\\hline",tab[,1])
+tab[,1] <- gsub("\\\\hline","",tab[,1])
+tab[row1[-length(row1)]+1,1] <- paste0("\\hline ",tab[row1[-length(row1)]+1,1])
+
+
+print(xtable(tab,
+             caption="Summary Table With Combination of Variables"),
+            include.rownames=F, sanitize.text.function=identity, size="small",
+      caption.placement="top",comment=FALSE)
+```
+
+
+\newpage
+
+### Table With One Continuous Variable Broken Down by Subgroup
+
+```{r , echo=TRUE,include=TRUE,message=FALSE}
+a5 <- pmx.sum.table.comb(d,
+                         cont.xvars=c("BIO"),
+                         sum.by=c("DOSE"),
+                         more.variables = c("SEX"),
+                         digits=c(1),
+                         LaTeX=T,
+                         PERCENT=T,
+                         Perc.Digits = 1,
+                         Cont.Var.Name="Biomarker",
+                         funs.summary=c("median","range","mean","sd","n","miss"))
+#write.csv(a5,"Single-group-continuous-example.csv",quote=F,row.names = F)
+```
+
+```{r,include=TRUE,echo=FALSE,results="asis"} 
+library(xtable)
+tab <- a5
+row1 <- grep("\\hline",tab[,1])
+tab[,1] <- gsub("\\\\hline","",tab[,1])
+tab[row1[-length(row1)]+1,1] <- paste0("\\hline ",tab[row1[-length(row1)]+1,1])
+
+
+print(xtable(tab,
+             caption="Summary Table of Baseline Disease Severity Across Studies and Gender"),
+            include.rownames=F, sanitize.text.function=identity, 
+      caption.placement="top",comment=FALSE)
+```
+
+
+
+\newpage
+### Table With One Continuous Variable Broken Down by Multiple Subgroups
+
+```{r , echo=TRUE,include=TRUE,message=FALSE}
+a6 <- pmx.sum.table.comb(d,
+                         cont.xvars=c("BIO"),
+                         sum.by=c("DOSE"),
+                         more.variables = c("SEX","SMOK"),
+                         digits=c(2),
+                         LaTeX=T,
+                         PERCENT=FALSE,
+                         Perc.Digits = 1,
+                         Cont.Var.Name="Biomarker",
+                         funs.summary=c("median","range","mean","sd","n","miss"))
+#write.csv(a6,"multiple-group-continuous-example.csv",quote=F,row.names = F)
+```
+
+```{r,include=TRUE,echo=FALSE,results="asis"} 
+library(xtable)
+tab <- a6
+row1 <- grep("\\hline",tab[,1])
+tab[,1] <- gsub("\\\\hline","",tab[,1])
+tab[row1[-length(row1)]+1,1] <- paste0("\\hline ",tab[row1[-length(row1)]+1,1])
+
+
+print(xtable(tab,
+             caption="Summary Table of Baseline Disease Severity Across Studies by Gender and Dose"),
+            include.rownames=F, sanitize.text.function=identity, 
+      tabular.environment="longtable",
+      floating=FALSE,
+      caption.placement="top",comment=FALSE)
+```
+
+\elandscape
+
+\newpage
+## Example Using tabcovsum()
+It is advised not to use `tabcovsum` anymore. `pmx.sum.table.comb()` is much more flexible.
+
+### Making a Summary Table of a Single Variable With tabcovsum()
+
+```{r , echo=TRUE,include=TRUE,message=FALSE}
+demogtab<-tabcovsum(
+      x1=d$SMOK,  # categorical variable to summarize
+      x2=d$DOSE,
+      x1names = levels(d$SMOK),
+      x1vname = "Smoking Status",
+      Total=F
+    )
+#write.csv(demogtab,"Categorical-Race-tabcovsum.csv",quote=F,row.names = F)
+```
+
+```{r,include=TRUE,echo=FALSE,results="asis"} 
+library(xtable)
+tab <- demogtab
+tab[,2] <- gsub("\\\\hline","",tab[,2])
+
+
+print(xtable(tab,
+             caption="Summary of Race by Study"),
+        include.rownames=F, sanitize.text.function=identity, caption.placement="top",comment=FALSE)
+```
+
+### Making a Full Summary Table With tabcovsum()
+
+```{r , echo=TRUE,include=TRUE,message=FALSE}
+demvars1 <- rbind(
+  tabcovsum(rep(1,nrow(d)),d$DOSE,c("n"),"Sample Size",Total=TRUE)
+  ,tabcovsum(d$SEX,d$DOSE,levels(d$SEX),"Sex",Total=TRUE)
+  ,tabcovsum(d$SMOK,d$DOSE,c("Never Smoker","Former Smoker","Smoker"),"Smoking Status",Total=TRUE)
+)
+#write.csv(demvars1,"Categorical-cov-summary-table.csv",quote=F,row.names = F)
+```
+
+```{r,include=TRUE,echo=FALSE,results="asis"} 
+library(xtable)
+tab <- demvars1
+row1 <- grep("\\hline",tab[,2])
+tab[,2] <- gsub("\\\\hline","",tab[,2])
+tab[,1] <- as.character(tab[,1])
+tab[row1[-length(row1)]+1,1] <- paste0("\\hline ",tab[row1[-length(row1)]+1,1])
+
+
+print(xtable(tab,
+             caption="Summary of Categorical Covariates"),
+        include.rownames=F, sanitize.text.function=identity, caption.placement="top",comment=FALSE)
+```

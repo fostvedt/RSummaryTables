@@ -206,6 +206,7 @@ print(xtable(tab,
         include.rownames=F, sanitize.text.function=identity, 
       caption.placement="top",comment=FALSE,
       tabular.environment="longtable", floating=F,
+      size="small",
       table.placement="h")
 ```
 

@@ -67,6 +67,7 @@ pmx.sum.table.comb = function(
   Cat.Var.Name=NULL, #
   PERCENT=TRUE,
   Perc.Digits = 0,  # number of significant digits for percentages, default 0
+  Cat.Perc.Across=FALSE, # should percentage for categorical variables be across rows (TRUE) or columns (FALSE)
   funs.summary=c("n","median","mean","sd","range","geomean","geosd","geocv","miss","se")
 )
 ```
@@ -102,6 +103,8 @@ A description of each argument is provided in the following bulleted list:
     + TRUE will print the % sign [eg (50%)]
     + FALSE will just print the number in parentheses [eg (50)]
 * Perc.Digits: This is the precision desired for the percentage calculations (default is 0 and results in integer output)
+* Cat.Perc.Across: TRUE/FALSE 
+    + Should percentage for categorical variables be across rows (TRUE) or columns (FALSE)
 * funs.summary: This is the list of available summary functions available.
     + The output from each summary function will print in the order given by the user in the list
     + If both `mean` and `sd` are requested, a contracted "Mean (Std. Dev.)" will print.
@@ -177,7 +180,7 @@ b1 <- pmx.sum.table.comb(data = d,
     digits=c(0,1,1,1),     # number of significant digit(s); 
                            #need one defined for each sum.by variabel
     LaTeX=T,               # if the output should be printed with LaTeX formatting
-    Cont.Var.Name=c("Age (yrs)","Body Weight (kg)","BiomArker",
+    Cont.Var.Name=c("Age (yrs)","Body Weight (kg)","Biomarker",
                     "Steady-State Cmax"), 
                           #name of the summary variable(s); 
                           # need one for each sum.by variable
@@ -206,6 +209,7 @@ print(xtable(tab,
       tabular.environment="longtable", floating=F,
       size="small",
       table.placement="h")
+
 ```
 
 

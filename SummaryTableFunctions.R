@@ -82,7 +82,7 @@ tabcovsum<- function(x1,x2,x1names,x1vname,Total=F){
 ##################################################
 
 
-pmx.sum.cat.table<- function(x1,x2,x1.names,x2.names,Total=F,LaTeX=T,PERCENT=F,Perc.Digits=0){
+pmx.sum.cat.table<- function(x1,x2,x1.names,x2.names,Total=FALSE,LaTeX=TRUE,PERCENT=FALSE,Perc.Digits=0,Cat.Perc.Across=FALSE){
   # creating the table for two categorical variables
   tc <- table(x1,x2)
   if(Total) tc <- cbind(tc,"Total"=table(x1))
@@ -98,8 +98,17 @@ pmx.sum.cat.table<- function(x1,x2,x1.names,x2.names,Total=F,LaTeX=T,PERCENT=F,P
   if(LaTeX) x1.names <- paste("\\;",x1.names)
   lx1 <- length(x1.names)   # figuring out how many rows are needed for the \hline to be placed right
   if(LaTeX) x1.names[lx1] <- paste("\\hline",x1.names[lx1]) # adding \hline to the last row of the table (ie to the last entry of levels)
-  tots <- apply(tc,2,sum) # counting the total N for each group of x1
-  tperc <- sodig(t(100*t(tc)/tots),Perc.Digits)  # transposing the table tc so that the division is across group totals then transposing again
+  
+  # if the percentages should be across rows or within columns  
+  if(Cat.Perc.Across){
+    tots <- apply(tc,1,sum) # counting the total N for each group of x1
+    if(Total) tots <- tots/2  # the total column doubles the sum since it adds the total to the group numbers
+    tperc <- sodig(100*as.numeric(tc)/as.numeric(tots),Perc.Digits)  # division is across factor level then transposing 
+  }else{    
+    tots <- apply(tc,2,sum) # counting the total N for each group of x1
+    tperc <- sodig(t(100*t(tc)/tots),Perc.Digits)  # transposing the table tc so that the division is across group totals then transposing again
+  }
+  
   if(PERCENT){  # if percent symbols are desired
     if(LaTeX){ 
       tperc1 <- paste0("(",tperc,"\\%)") # adding in the latex % code
@@ -120,6 +129,7 @@ pmx.sum.cat.table<- function(x1,x2,x1.names,x2.names,Total=F,LaTeX=T,PERCENT=F,P
   row.names(tab2) <- NULL   # removing the row names
   return(tab2)
 }
+
 
 ##################################################
 # Other useful functions
@@ -582,6 +592,7 @@ pmx.sum.table.comb <- function(data,
                                Cat.Var.Name=NULL, #
                                PERCENT=F,  # add percent sign within parentheses (%)
                                Perc.Digits=0,
+                               Cat.Perc.Across=FALSE,
                                funs.summary=c("n","median","mean","sd","range","geomean","geosd","geocv","miss","se")
 ) { # vector with the functions to summarize
   
@@ -705,7 +716,8 @@ pmx.sum.table.comb <- function(data,
                              Total=TRUE,  # since pmx.cont.table includes total this is set to true
                              LaTeX=LaTeX,
                              PERCENT=PERCENT,
-                             Perc.Digits=Perc.Digits)
+                             Perc.Digits=Perc.Digits,
+                             Cat.Perc.Across=Cat.Perc.Across)
       outdf.cat <- rbind(outdf.cat,a)
     }
   }

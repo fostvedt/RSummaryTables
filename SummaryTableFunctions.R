@@ -600,6 +600,11 @@ pmx.sum.table.comb <- function(data,
   warn.track <- 0
   ww <- NULL
   
+  # a tibble breaks the class function checking if a column is numeric so 
+  # forcing the dataset to be a dataframe
+  data <- data.frame(data)
+  
+  
   ##########
   # Checking that all requested variables are in the dataset
   if(length(setdiff(c(cont.xvars,cat.xvars),colnames(data)))>0){
